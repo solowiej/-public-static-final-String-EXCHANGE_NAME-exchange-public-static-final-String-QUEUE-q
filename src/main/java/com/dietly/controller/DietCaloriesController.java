@@ -32,13 +32,13 @@ public class DietCaloriesController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDietCalories(DietCalories dietCalories) {
+    public void postDietCalories(@RequestBody DietCalories dietCalories) {
         dietCaloriesService.save(dietCalories);
     }
 
     @PutMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDietCalories(DietCalories dietCalories) {
+    public void putDietCalories(@RequestBody DietCalories dietCalories) {
         dietCaloriesService.update(dietCalories);
     }
 

@@ -30,13 +30,13 @@ public class DietOptionController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDietOption(DietOption dietOption) {
+    public void postDietOption(@RequestBody DietOption dietOption) {
         dietOptionService.save(dietOption);
     }
 
     @PutMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDietOption(DietOption dietOption) {
+    public void putDietOption(@RequestBody DietOption dietOption) {
         dietOptionService.update(dietOption);
     }
 
