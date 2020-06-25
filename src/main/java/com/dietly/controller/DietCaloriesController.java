@@ -2,6 +2,7 @@ package com.dietly.controller;
 
 
 import com.dietly.model.DietCalories;
+import com.dietly.model.dto.DietCaloriesDto;
 import com.dietly.service.DietCaloriesService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,14 @@ public class DietCaloriesController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDietCalories(@RequestBody DietCalories dietCalories) {
-        dietCaloriesService.save(dietCalories);
+    public void postDietCalories(@RequestBody DietCaloriesDto dto) {
+        dietCaloriesService.save(dto);
     }
 
     @PutMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDietCalories(@RequestBody DietCalories dietCalories) {
-        dietCaloriesService.update(dietCalories);
+    public void putDietCalories(@RequestBody DietCaloriesDto dto) {
+        dietCaloriesService.update(dto);
     }
 
     @DeleteMapping("/{id}")

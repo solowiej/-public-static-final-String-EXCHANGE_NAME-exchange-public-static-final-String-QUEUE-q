@@ -48,14 +48,14 @@ public class DietController {
     public void delete(@PathVariable("id") Integer id) {
         dietService.delete(id);
     }
+
     @PostMapping("/dietOption")
-    public Integer addDietOption(AddDietOptionToDietRequest dto) {
+    public Integer addDietOption(@RequestBody AddDietOptionToDietRequest dto) {
         return dietService.addDietOptionToDiet(dto);
     }
 
     @PostMapping("/assignDietOption")
-    public Integer addStudent(AssignDietOptionToDiet dto) {
+    public Integer addStudent(@RequestBody AssignDietOptionToDiet dto) {
         return dietService.assingDietOptionToDiet(dto);
     }
-
 }

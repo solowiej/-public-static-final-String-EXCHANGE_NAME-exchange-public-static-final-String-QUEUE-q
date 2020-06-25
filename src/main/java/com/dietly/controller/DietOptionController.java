@@ -1,6 +1,9 @@
 package com.dietly.controller;
 
 import com.dietly.model.DietOption;
+import com.dietly.model.dto.DietOptionDto;
+import com.dietly.model.requests.AddDietCaloriesToDietOptionRequest;
+import com.dietly.model.requests.AssignDietCaloriesToDietOption;
 import com.dietly.service.DietOptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +33,29 @@ public class DietOptionController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDietOption(@RequestBody DietOption dietOption) {
-        dietOptionService.save(dietOption);
+    public void postDietOption(@RequestBody DietOptionDto dto) {
+        dietOptionService.save(dto);
     }
 
     @PutMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDietOption(@RequestBody DietOption dietOption) {
-        dietOptionService.update(dietOption);
+    public void putDietOption(@RequestBody DietOptionDto dto) {
+        dietOptionService.update(dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void delete(@PathVariable("id") Integer id) {
         dietOptionService.delete(id);
+    }
+
+    @PostMapping("/dietCalories")
+    public Integer addDietCalories(@RequestBody AddDietCaloriesToDietOptionRequest dto) {
+        return dietOptionService.addDietCaloriesToDietOption(dto);
+    }
+
+    @PostMapping("/assignDietCalories")
+    public Integer addGrade(@RequestBody AssignDietCaloriesToDietOption dto) {
+        return dietOptionService.assignDietCaloriesToDietOption(dto);
     }
 }
