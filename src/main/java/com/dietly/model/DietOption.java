@@ -15,6 +15,7 @@ import java.util.Set;
 public class DietOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer dietOptionId;
     private String name;
     private String abbreviation;

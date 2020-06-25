@@ -1,6 +1,9 @@
 package com.dietly.controller;
 
 import com.dietly.model.Diet;
+import com.dietly.model.dto.DietDto;
+import com.dietly.model.requests.AddDietOptionToDietRequest;
+import com.dietly.model.requests.AssignDietOptionToDiet;
 import com.dietly.service.DietService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +33,14 @@ public class DietController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDiet(@RequestBody Diet diet) {
-        dietService.save(diet);
+    public void postDiet(@RequestBody DietDto dto) {
+        dietService.save(dto);
     }
 
     @PutMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDiet(@RequestBody Diet diet) {
-        dietService.update(diet);
+    public void putDiet(@RequestBody DietDto dto) {
+        dietService.update(dto);
     }
 
     @DeleteMapping("/{id}")
@@ -45,4 +48,14 @@ public class DietController {
     public void delete(@PathVariable("id") Integer id) {
         dietService.delete(id);
     }
+    @PostMapping("/dietOption")
+    public Integer addDietOption(AddDietOptionToDietRequest dto) {
+        return dietService.addDietOptionToDiet(dto);
+    }
+
+    @PostMapping("/assignDietOption")
+    public Integer addStudent(AssignDietOptionToDiet dto) {
+        return dietService.assingDietOptionToDiet(dto);
+    }
+
 }

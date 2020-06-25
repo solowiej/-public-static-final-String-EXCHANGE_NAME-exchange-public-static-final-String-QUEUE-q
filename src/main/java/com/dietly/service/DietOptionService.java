@@ -1,6 +1,14 @@
 package com.dietly.service;
 
+import com.dietly.exception.WrongOperation;
+import com.dietly.mapper.DietCaloriesMapper;
+import com.dietly.mapper.DietOptionMapper;
+import com.dietly.model.DietCalories;
 import com.dietly.model.DietOption;
+import com.dietly.model.dto.DietOptionDto;
+import com.dietly.model.requests.AddDietCaloriesToDietOptionRequest;
+import com.dietly.model.requests.AssignDietCaloriesToDietOption;
+import com.dietly.repository.DietCaloriesRepository;
 import com.dietly.repository.DietOptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +19,17 @@ import java.util.Optional;
 
 @Service
 public class DietOptionService {
-
     private DietOptionRepository dietOptionRepository;
+    private DietOptionMapper dietOptionMapper;
+    private DietCaloriesRepository dietCaloriesRepository;
+    private DietCaloriesMapper dietCaloriesMapper;
 
     @Autowired
-    public DietOptionService(DietOptionRepository dietOptionRepository) {
+    public DietOptionService(DietOptionRepository dietOptionRepository, DietOptionMapper dietOptionMapper, DietCaloriesRepository dietCaloriesRepository, DietCaloriesMapper dietCaloriesMapper) {
         this.dietOptionRepository = dietOptionRepository;
+        this.dietOptionMapper = dietOptionMapper;
+        this.dietCaloriesRepository = dietCaloriesRepository;
+        this.dietCaloriesMapper = dietCaloriesMapper;
     }
 
     public List<DietOption> getAll() {
@@ -33,15 +46,16 @@ public class DietOptionService {
         throw new EntityNotFoundException("dietOption, id:" + dietOptionId);
     }
 
-    public void save(DietOption dietOption) {
-        dietOptionRepository.save(dietOption);
+    public Integer save(DietOptionDto dto) {
+        DietOption dietOption = dietOptionMapper.createDietOptionFromDto(dto);
+        return dietOptionRepository.save(dietOption).getDietOptionId();
     }
 
-    public void update(DietOption dietOption) {
-        Optional<DietOption> optionalDietOption = dietOptionRepository.findById(dietOption.getDietOptionId());
+    public void update(DietOptionDto dto) {
+        Optional<DietOption> optionalDietOption = dietOptionRepository.findById(dto.getDietOptionId());
 
         if (optionalDietOption.isPresent()) {
-            dietOption = optionalDietOption.get();
+            DietOption dietOption = optionalDietOption.get();
 
             if (dietOption.getName() != null) {
                 dietOption.setName(dietOption.getName());
@@ -51,21 +65,10 @@ public class DietOptionService {
                 dietOption.setAbbreviation(dietOption.getAbbreviation());
             }
 
-
-            //need to check this one
-            if (dietOption.getDiet() != null) {
-                dietOption.setDiet(dietOption.getDiet());
-            }
-
-            if (!dietOption.getDietCalories().isEmpty()) {
-                dietOption.setDietCalories(dietOption.getDietCalories());
-            }
-            //
-
             dietOptionRepository.save(dietOption);
             return;
         }
-        throw new EntityNotFoundException("dietOption, id:" + dietOption.getDietOptionId());
+        throw new EntityNotFoundException("dietOption, id:" + dto.getDietOptionId());
     }
 
     public void delete(Integer id) {
@@ -74,5 +77,41 @@ public class DietOptionService {
             return;
         }
         throw new EntityNotFoundException("dietOption, id:" + id);
+    }
+
+    public Integer addDietCaloriesToDietOption(AddDietCaloriesToDietOptionRequest dto) {
+        Optional<DietOption> dietOptionOptional = dietOptionRepository.findById(dto.getDietOptionId());
+
+        if (dietOptionOptional.isPresent()) {
+            DietOption dietOption = dietOptionOptional.get();
+
+            DietCalories dietCalories = dietCaloriesMapper.createDietCaloriesFromDto(dto);
+            dietCalories.setDietOption(dietOption);
+
+            return dietCaloriesRepository.save(dietCalories).getDietCaloriesId();
+        }
+        throw new EntityNotFoundException("dietOption, id:" + dto.getDietOptionId());
+    }
+
+    public Integer assignDietCaloriesToDietOption(AssignDietCaloriesToDietOption dto) {
+
+        Optional<DietOption> dietOptionOptional = dietOptionRepository.findById(dto.getDietCaloriesId());
+        if (!dietOptionOptional.isPresent()) {
+            throw new EntityNotFoundException("dietOption, id:" + dto.getDietOptionId());
+        }
+        Optional<DietCalories> dietCaloriesOptional = dietCaloriesRepository.findById(dto.getDietCaloriesId());
+        if (!dietCaloriesOptional.isPresent()) {
+            throw new EntityNotFoundException("dietCalories, id" + dto.getDietCaloriesId());
+        }
+
+        DietOption dietOption = dietOptionOptional.get();
+        DietCalories dietCalories = dietCaloriesOptional.get();
+
+        if (dietOption.getDietOptionId() != null) {
+            throw new WrongOperation("You should not assign grade that is already assigned.");
+        }
+        dietCalories.setDietOption(dietOption);
+
+        return dietCaloriesRepository.save(dietCalories).getDietCaloriesId();
     }
 }
