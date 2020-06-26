@@ -26,7 +26,6 @@ public class DietCaloriesService {
         return dietCaloriesRepository.findAll();
     }
 
-
     public DietCalories getById(Integer dietCaloriesId) {
         Optional<DietCalories> optionalDietCalories = dietCaloriesRepository.findById(dietCaloriesId);
 
@@ -36,9 +35,9 @@ public class DietCaloriesService {
         throw new EntityNotFoundException("dietCalories, id:" + dietCaloriesId);
     }
 
-    public Integer save(DietCaloriesDto dto) {
+    public void save(DietCaloriesDto dto) {
         DietCalories dietCalories = dietCaloriesMapper.createDietCaloriesFromDto(dto);
-        return dietCaloriesRepository.save(dietCalories).getDietCaloriesId();
+        dietCaloriesRepository.save(dietCalories);
     }
 
     public void update(DietCaloriesDto dto) {
@@ -48,7 +47,7 @@ public class DietCaloriesService {
             DietCalories dietCalories = optionalDietCalories.get();
 
             if (dietCalories.getCalories() != null) {
-                dietCalories.setCalories(dietCalories.getCalories());
+                dietCalories.setCalories(dto.getCalories());
             }
 
             dietCaloriesRepository.save(dietCalories);

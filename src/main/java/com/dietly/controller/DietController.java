@@ -50,12 +50,14 @@ public class DietController {
     }
 
     @PostMapping("/dietOption")
-    public Integer addDietOption(@RequestBody AddDietOptionToDietRequest dto) {
-        return dietService.addDietOptionToDiet(dto);
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void addDietOption(@RequestBody AddDietOptionToDietRequest dto) {
+        dietService.addDietOptionToDiet(dto);
     }
 
     @PostMapping("/assignDietOption")
-    public Integer addStudent(@RequestBody AssignDietOptionToDiet dto) {
-        return dietService.assingDietOptionToDiet(dto);
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void assignDietOption(@RequestBody AssignDietOptionToDiet dto) {
+        dietService.assingDietOptionToDiet(dto);
     }
 }

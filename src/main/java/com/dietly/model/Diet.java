@@ -1,7 +1,9 @@
 package com.dietly.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
