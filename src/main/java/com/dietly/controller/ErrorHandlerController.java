@@ -17,6 +17,5 @@ public class ErrorHandlerController {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorMessage("Unable to find entity " + exception.getMessage()));
-
     }
 }

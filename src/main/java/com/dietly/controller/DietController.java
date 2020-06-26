@@ -1,16 +1,13 @@
 package com.dietly.controller;
 
-import com.dietly.model.Diet;
 import com.dietly.model.dto.DietDto;
 import com.dietly.model.requests.AddDietOptionToDietRequest;
 import com.dietly.model.requests.AssignDietOptionToDiet;
 import com.dietly.service.DietService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(DietController.API_DIET_PATH)
@@ -22,42 +19,37 @@ public class DietController {
     private DietService dietService;
 
     @GetMapping()
-    public List<Diet> getDietList() {
-        return dietService.getAll();
+    public ResponseEntity getDietList() {
+        return ResponseEntity.ok(dietService.getAll());
     }
 
     @GetMapping("/{id}")
-    public Diet getById(@PathVariable("id") Integer dietId) {
-        return dietService.getById(dietId);
+    public ResponseEntity getById(@PathVariable("id") Integer dietId) {
+        return ResponseEntity.ok(dietService.getById(dietId));
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDiet(@RequestBody DietDto dto) {
-        dietService.save(dto);
+    public ResponseEntity postDiet(@RequestBody DietDto dto) {
+        return ResponseEntity.ok(dietService.save(dto));
     }
 
     @PutMapping
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDiet(@RequestBody DietDto dto) {
-        dietService.update(dto);
+    public ResponseEntity putDiet(@RequestBody DietDto dto) {
+        return ResponseEntity.ok(dietService.update(dto));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void delete(@PathVariable("id") Integer id) {
-        dietService.delete(id);
+    public ResponseEntity delete(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(dietService.delete(id));
     }
 
     @PostMapping("/dietOption")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void addDietOption(@RequestBody AddDietOptionToDietRequest dto) {
-        dietService.addDietOptionToDiet(dto);
+    public ResponseEntity addDietOption(@RequestBody AddDietOptionToDietRequest dto) {
+        return ResponseEntity.ok(dietService.addDietOptionToDiet(dto));
     }
 
     @PostMapping("/assignDietOption")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void assignDietOption(@RequestBody AssignDietOptionToDiet dto) {
-        dietService.assingDietOptionToDiet(dto);
+    public ResponseEntity assignDietOption(@RequestBody AssignDietOptionToDiet dto) {
+        return ResponseEntity.ok(dietService.assingDietOptionToDiet(dto));
     }
 }

@@ -1,16 +1,13 @@
 package com.dietly.controller;
 
-import com.dietly.model.DietOption;
 import com.dietly.model.dto.DietOptionDto;
 import com.dietly.model.requests.AddDietCaloriesToDietOptionRequest;
 import com.dietly.model.requests.AssignDietCaloriesToDietOption;
 import com.dietly.service.DietOptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(DietOptionController.API_DIET_OPTION_PATH)
@@ -22,42 +19,37 @@ public class DietOptionController {
     private DietOptionService dietOptionService;
 
     @GetMapping()
-    public List<DietOption> getDietOptionList() {
-        return dietOptionService.getAll();
+    public ResponseEntity getDietOptionList() {
+        return ResponseEntity.ok(dietOptionService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DietOption getById(@PathVariable("id") Integer dietOptionId) {
-        return dietOptionService.getById(dietOptionId);
+    public ResponseEntity getById(@PathVariable("id") Integer dietOptionId) {
+        return ResponseEntity.ok(dietOptionService.getById(dietOptionId));
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void postDietOption(@RequestBody DietOptionDto dto) {
-        dietOptionService.save(dto);
+    public ResponseEntity postDietOption(@RequestBody DietOptionDto dto) {
+        return ResponseEntity.ok(dietOptionService.save(dto));
     }
 
     @PutMapping
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void putDietOption(@RequestBody DietOptionDto dto) {
-        dietOptionService.update(dto);
+    public ResponseEntity putDietOption(@RequestBody DietOptionDto dto) {
+        return ResponseEntity.ok(dietOptionService.update(dto));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void delete(@PathVariable("id") Integer id) {
-        dietOptionService.delete(id);
+    public ResponseEntity delete(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(dietOptionService.delete(id));
     }
 
     @PostMapping("/dietCalories")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void addDietCalories(@RequestBody AddDietCaloriesToDietOptionRequest dto) {
-        dietOptionService.addDietCaloriesToDietOption(dto);
+    public ResponseEntity addDietCalories(@RequestBody AddDietCaloriesToDietOptionRequest dto) {
+        return ResponseEntity.ok(dietOptionService.addDietCaloriesToDietOption(dto));
     }
 
     @PostMapping("/assignDietCalories")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public void assignDietCalories(@RequestBody AssignDietCaloriesToDietOption dto) {
-        dietOptionService.assignDietCaloriesToDietOption(dto);
+    public ResponseEntity assignDietCalories(@RequestBody AssignDietCaloriesToDietOption dto) {
+        return ResponseEntity.ok(dietOptionService.assignDietCaloriesToDietOption(dto));
     }
 }
